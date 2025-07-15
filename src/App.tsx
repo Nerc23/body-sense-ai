@@ -7,6 +7,11 @@ import Index from "./pages/Index";
 import HeartRate from "./pages/HeartRate";
 import BloodOxygen from "./pages/BloodOxygen";
 import Activity from "./pages/Activity";
+import SleepPatterns from "./pages/SleepPatterns";
+import StressLevels from "./pages/StressLevels";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +27,11 @@ const App = () => (
           <Route path="/heart-rate" element={<HeartRate />} />
           <Route path="/blood-oxygen" element={<BloodOxygen />} />
           <Route path="/activity" element={<Activity />} />
+          <Route path="/sleep" element={<SleepPatterns />} />
+          <Route path="/stress" element={<StressLevels />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/auth" element={<Auth />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

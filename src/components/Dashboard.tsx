@@ -5,15 +5,29 @@ import { HealthChart } from "./HealthChart";
 import { AIInsightsCard } from "./AIInsightsCard";
 import { EmergencyDoctorFinder } from "./EmergencyDoctorFinder";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateHealthMetrics, generateTrendData, generateAIInsights } from "@/lib/healthData";
 import { useToast } from "@/hooks/use-toast";
 
 export function Dashboard() {
   const [metrics, setMetrics] = useState(generateHealthMetrics());
   const [trendData, setTrendData] = useState(generateTrendData(24));
+  const [timeframe, setTimeframe] = useState("daily");
   const [showEmergencyFinder, setShowEmergencyFinder] = useState(false);
   const insights = generateAIInsights();
   const { toast } = useToast();
+
+  const getTimeframeData = () => {
+    // Generate different data based on timeframe
+    switch (timeframe) {
+      case "weekly":
+        return generateTrendData(7).map((d, i) => ({ time: `Day ${i + 1}`, value: d.heartRate }));
+      case "monthly":
+        return generateTrendData(30).map((d, i) => ({ time: `Day ${i + 1}`, value: d.heartRate }));
+      default:
+        return trendData.map(d => ({ time: d.time, value: d.heartRate }));
+    }
+  };
 
   // Simulate real-time updates and notifications
   useEffect(() => {
@@ -58,15 +72,24 @@ export function Dashboard() {
           <h1 className="text-3xl font-bold text-foreground">Health Dashboard</h1>
           <p className="text-muted-foreground">Real-time monitoring and AI insights</p>
         </div>
-        <div className="flex items-center gap-2">
-          <div className={`h-3 w-3 rounded-full ${
-            overallStatus === "critical" ? "bg-destructive animate-pulse" :
-            overallStatus === "warning" ? "bg-warning" : "bg-activity"
-          }`} />
-          <span className="text-sm font-medium">
-            {overallStatus === "critical" ? "Critical Alert" :
-             overallStatus === "warning" ? "Attention Needed" : "All Systems Normal"}
-          </span>
+        <div className="flex items-center gap-4">
+          <Tabs value={timeframe} onValueChange={setTimeframe}>
+            <TabsList>
+              <TabsTrigger value="daily">Daily</TabsTrigger>
+              <TabsTrigger value="weekly">Weekly</TabsTrigger>
+              <TabsTrigger value="monthly">Monthly</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <div className="flex items-center gap-2">
+            <div className={`h-3 w-3 rounded-full ${
+              overallStatus === "critical" ? "bg-destructive animate-pulse" :
+              overallStatus === "warning" ? "bg-warning" : "bg-activity"
+            }`} />
+            <span className="text-sm font-medium">
+              {overallStatus === "critical" ? "Critical Alert" :
+               overallStatus === "warning" ? "Attention Needed" : "All Systems Normal"}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -176,11 +199,11 @@ export function Dashboard() {
 
       {/* Charts and Insights Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 24-Hour Heart Rate Trend */}
+        {/* Heart Rate Trend */}
         <Card className="p-6 shadow-card">
-          <h3 className="text-lg font-semibold text-foreground mb-4">24-Hour Heart Rate Trend</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">{`Heart Rate Trend (${timeframe})`}</h3>
           <HealthChart 
-            data={trendData.map(d => ({ time: d.time, value: d.heartRate }))}
+            data={getTimeframeData()}
             color="hsl(var(--heart-rate))"
             height={250}
           />

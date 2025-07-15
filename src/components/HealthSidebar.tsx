@@ -113,7 +113,10 @@ export function HealthSidebar() {
             ))}
             
             {/* Logout */}
-            <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-destructive/10 hover:text-destructive">
+            <button 
+              onClick={() => window.location.href = '/auth'}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+            >
               <LogOut className="h-4 w-4 flex-shrink-0" />
               {!collapsed && <span className="text-sm">Logout</span>}
             </button>
