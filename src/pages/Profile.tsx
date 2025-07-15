@@ -40,6 +40,7 @@ const Profile = () => {
   const connectedDevices = [
     { name: "Apple Watch Series 9", type: "Smartwatch", status: "Connected", lastSync: "2 min ago" },
     { name: "iPhone 15 Pro", type: "Smartphone", status: "Connected", lastSync: "1 min ago" },
+    { name: "Samsung Galaxy Watch 6", type: "Android Smartwatch", status: "Connected", lastSync: "3 min ago" },
     { name: "AirPods Pro", type: "Audio Health", status: "Connected", lastSync: "5 min ago" }
   ];
 

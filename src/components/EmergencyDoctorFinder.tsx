@@ -58,6 +58,72 @@ const emergencyDoctors: Doctor[] = [
     address: "789 Care Avenue, Uptown",
     estimatedTime: "12 min",
     photo: "👩‍⚕️"
+  },
+  // Global doctors from different countries
+  {
+    id: "4",
+    name: "Dr. Yuki Tanaka",
+    specialty: "Emergency Medicine",
+    hospital: "Tokyo General Hospital",
+    distance: 6800,
+    rating: 4.9,
+    availability: "available",
+    phone: "+81 3-1234-5678",
+    address: "Tokyo, Japan",
+    estimatedTime: "Video call available",
+    photo: "👨‍⚕️"
+  },
+  {
+    id: "5",
+    name: "Dr. Hans Mueller",
+    specialty: "Cardiology",
+    hospital: "Berlin Heart Institute",
+    distance: 4200,
+    rating: 4.8,
+    availability: "available",
+    phone: "+49 30 12345678",
+    address: "Berlin, Germany",
+    estimatedTime: "Video call available",
+    photo: "👨‍⚕️"
+  },
+  {
+    id: "6",
+    name: "Dr. Priya Sharma",
+    specialty: "Internal Medicine",
+    hospital: "Mumbai Medical Center",
+    distance: 8500,
+    rating: 4.7,
+    availability: "busy",
+    phone: "+91 22 1234 5678",
+    address: "Mumbai, India",
+    estimatedTime: "Video call available",
+    photo: "👩‍⚕️"
+  },
+  {
+    id: "7",
+    name: "Dr. Lucas Silva",
+    specialty: "Emergency Medicine",
+    hospital: "São Paulo Emergency Center",
+    distance: 5300,
+    rating: 4.6,
+    availability: "available",
+    phone: "+55 11 1234-5678",
+    address: "São Paulo, Brazil",
+    estimatedTime: "Video call available",
+    photo: "👨‍⚕️"
+  },
+  {
+    id: "8",
+    name: "Dr. Fatima Al-Zahra",
+    specialty: "Cardiology",
+    hospital: "Dubai Medical City",
+    distance: 7500,
+    rating: 4.8,
+    availability: "available",
+    phone: "+971 4 123 4567",
+    address: "Dubai, UAE",
+    estimatedTime: "Video call available",
+    photo: "👩‍⚕️"
   }
 ];
 
@@ -99,21 +165,41 @@ export function EmergencyDoctorFinder() {
         <div>
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-2">
             <MapPin className="h-5 w-5 text-destructive" />
-            Emergency Care Finder
+            Global Emergency Care Finder
           </h3>
           <p className="text-sm text-muted-foreground">
-            Find nearby doctors and hospitals for immediate assistance
+            Find doctors and hospitals worldwide - local emergency care and international telemedicine available 24/7
           </p>
         </div>
 
         {/* Search */}
-        <div>
+        <div className="space-y-3">
           <Input
-            placeholder="Search by doctor, specialty, or hospital..."
+            placeholder="Search by doctor, specialty, hospital, or country..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full"
           />
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              Emergency Medicine
+            </Badge>
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              Cardiology
+            </Badge>
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              Telemedicine
+            </Badge>
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              Video Consultation
+            </Badge>
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              Nearby
+            </Badge>
+            <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              International
+            </Badge>
+          </div>
         </div>
 
         {/* Emergency Banner */}
@@ -156,7 +242,7 @@ export function EmergencyDoctorFinder() {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <MapPin className="h-4 w-4" />
-                      <span>{doctor.distance} km away</span>
+                      <span>{doctor.distance > 100 ? `${doctor.distance} miles` : `${doctor.distance} km`} away</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
