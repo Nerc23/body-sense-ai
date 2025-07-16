@@ -25,23 +25,6 @@ export function HealthMetricCard({
   alert = "normal",
   children
 }: HealthMetricCardProps) {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSmartwatch, setIsSmartwatch] = useState(false);
-
-  useEffect(() => {
-    const checkDeviceType = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      
-      setIsMobile(width < 768);
-      setIsSmartwatch(width <= 320 && height <= 320);
-    };
-    
-    checkDeviceType();
-    window.addEventListener('resize', checkDeviceType);
-    return () => window.removeEventListener('resize', checkDeviceType);
-  }, []);
-
   const getColorClasses = () => {
     switch (color) {
       case "heart-rate":
@@ -83,18 +66,16 @@ export function HealthMetricCard({
   };
 
   return (
-    <Card className={`${isSmartwatch ? "p-3" : isMobile ? "p-4" : "p-6"} shadow-card hover:shadow-elevated transition-all duration-300 ${getColorClasses()} ${getAlertClasses()}`}>
-      <div className={`flex items-center justify-between ${isSmartwatch ? "mb-2" : "mb-4"}`}>
+    <Card className={`p-6 shadow-card hover:shadow-elevated transition-all duration-300 ${getColorClasses()} ${getAlertClasses()}`}>
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={`${isSmartwatch ? "p-2" : "p-3"} rounded-xl ${getColorClasses()} shadow-sm`}>
-            <Icon className={`${isSmartwatch ? "h-4 w-4" : "h-5 w-5"}`} />
+          <div className={`p-3 rounded-xl ${getColorClasses()} shadow-sm`}>
+            <Icon className="h-5 w-5" />
           </div>
           <div>
-            <h3 className={`${isSmartwatch ? "text-xs" : isMobile ? "text-sm" : ""} font-semibold text-foreground`}>
-              {title}
-            </h3>
+            <h3 className="font-semibold text-foreground">{title}</h3>
             {trend && trendValue && (
-              <div className={`flex items-center gap-1 ${isSmartwatch ? "text-xs smartwatch-hide" : "text-xs"} text-muted-foreground`}>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <span>{getTrendIcon()}</span>
                 <span>{trendValue}</span>
               </div>
@@ -102,18 +83,14 @@ export function HealthMetricCard({
           </div>
         </div>
         {alert !== "normal" && (
-          <div className={`${isSmartwatch ? "h-2 w-2" : "h-3 w-3"} rounded-full ${alert === "warning" ? "bg-warning" : "bg-destructive"} animate-pulse`} />
+          <div className={`h-3 w-3 rounded-full ${alert === "warning" ? "bg-warning" : "bg-destructive"} animate-pulse`} />
         )}
       </div>
       
       <div className="space-y-2">
         <div className="flex items-baseline gap-2">
-          <span className={`${isSmartwatch ? "text-xl" : isMobile ? "text-2xl" : "text-3xl"} font-bold text-foreground`}>
-            {value}
-          </span>
-          <span className={`${isSmartwatch ? "text-xs" : "text-sm"} text-muted-foreground`}>
-            {unit}
-          </span>
+          <span className="text-3xl font-bold text-foreground">{value}</span>
+          <span className="text-sm text-muted-foreground">{unit}</span>
         </div>
         {children}
       </div>

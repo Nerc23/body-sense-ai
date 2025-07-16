@@ -15,25 +15,8 @@ export function Dashboard() {
   const [trendData, setTrendData] = useState(generateTrendData(24));
   const [timeframe, setTimeframe] = useState("daily");
   const [showEmergencyFinder, setShowEmergencyFinder] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSmartwatch, setIsSmartwatch] = useState(false);
   const insights = generateAIInsights();
   const { toast } = useToast();
-
-  // Detect device type
-  useEffect(() => {
-    const checkDeviceType = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      
-      setIsMobile(width < 768);
-      setIsSmartwatch(width <= 320 && height <= 320);
-    };
-    
-    checkDeviceType();
-    window.addEventListener('resize', checkDeviceType);
-    return () => window.removeEventListener('resize', checkDeviceType);
-  }, []);
 
   const getTimeframeData = () => {
     // Generate different data based on timeframe
@@ -83,29 +66,19 @@ export function Dashboard() {
   const overallStatus = getHealthStatus(metrics.heartRate, metrics.bloodOxygen, metrics.stressLevel);
 
   return (
-    <div className={`space-y-${isMobile ? "4" : "6"} ${isMobile ? "px-2" : ""}`}>
+    <div className="space-y-6">
       {/* Header */}
-      <div className={`flex ${isMobile ? "flex-col space-y-3" : "items-center justify-between"}`}>
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className={`${isSmartwatch ? "text-lg" : isMobile ? "text-2xl" : "text-3xl"} font-bold text-foreground`}>
-            {isSmartwatch ? "Health" : "Health Dashboard"}
-          </h1>
-          <p className={`text-muted-foreground ${isSmartwatch ? "text-xs smartwatch-hide" : isMobile ? "text-sm" : ""}`}>
-            {isSmartwatch ? "" : "Real-time monitoring and AI insights"}
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">Health Dashboard</h1>
+          <p className="text-muted-foreground">Real-time monitoring and AI insights</p>
         </div>
-        <div className={`flex ${isMobile ? "flex-col space-y-2" : "items-center gap-4"}`}>
-          <Tabs value={timeframe} onValueChange={setTimeframe} className={isSmartwatch ? "smartwatch-hide" : ""}>
+        <div className="flex items-center gap-4">
+          <Tabs value={timeframe} onValueChange={setTimeframe}>
             <TabsList>
-              <TabsTrigger value="daily" className={isMobile ? "text-xs px-2" : ""}>
-                {isMobile ? "Day" : "Daily"}
-              </TabsTrigger>
-              <TabsTrigger value="weekly" className={isMobile ? "text-xs px-2" : ""}>
-                {isMobile ? "Week" : "Weekly"}
-              </TabsTrigger>
-              <TabsTrigger value="monthly" className={isMobile ? "text-xs px-2" : ""}>
-                {isMobile ? "Month" : "Monthly"}
-              </TabsTrigger>
+              <TabsTrigger value="daily">Daily</TabsTrigger>
+              <TabsTrigger value="weekly">Weekly</TabsTrigger>
+              <TabsTrigger value="monthly">Monthly</TabsTrigger>
             </TabsList>
           </Tabs>
           <div className="flex items-center gap-2">
@@ -113,7 +86,7 @@ export function Dashboard() {
               overallStatus === "critical" ? "bg-destructive animate-pulse" :
               overallStatus === "warning" ? "bg-warning" : "bg-activity"
             }`} />
-            <span className={`${isMobile ? "text-xs" : "text-sm"} font-medium`}>
+            <span className="text-sm font-medium">
               {overallStatus === "critical" ? "Critical Alert" :
                overallStatus === "warning" ? "Attention Needed" : "All Systems Normal"}
             </span>
@@ -122,11 +95,7 @@ export function Dashboard() {
       </div>
 
       {/* Main Metrics Grid */}
-      <div className={`grid ${
-        isSmartwatch ? "grid-cols-1 gap-2" : 
-        isMobile ? "grid-cols-1 gap-4" : 
-        "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      }`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <HealthMetricCard
           title="Heart Rate"
           value={metrics.heartRate.toString()}
@@ -137,11 +106,11 @@ export function Dashboard() {
           trendValue={metrics.heartRate > 80 ? "+5 vs avg" : metrics.heartRate < 65 ? "-3 vs avg" : "Normal range"}
           alert={metrics.heartRate > 100 ? "critical" : metrics.heartRate > 85 ? "warning" : "normal"}
         >
-          <div className={`mt-3 ${isSmartwatch ? "smartwatch-hide" : ""}`}>
+          <div className="mt-3">
             <HealthChart 
               data={trendData.map(d => ({ time: d.time, value: d.heartRate }))}
               color="hsl(var(--heart-rate))"
-              height={isMobile ? 60 : 80}
+              height={80}
             />
           </div>
         </HealthMetricCard>
@@ -156,11 +125,11 @@ export function Dashboard() {
           trendValue={metrics.bloodOxygen >= 98 ? "Optimal" : "Below optimal"}
           alert={metrics.bloodOxygen < 95 ? "critical" : metrics.bloodOxygen < 97 ? "warning" : "normal"}
         >
-          <div className={`mt-3 ${isSmartwatch ? "smartwatch-hide" : ""}`}>
+          <div className="mt-3">
             <HealthChart 
               data={trendData.map(d => ({ time: d.time, value: d.bloodOxygen }))}
               color="hsl(var(--oxygen))"
-              height={isMobile ? 60 : 80}
+              height={80}
             />
           </div>
         </HealthMetricCard>
@@ -174,7 +143,7 @@ export function Dashboard() {
           trend={metrics.steps > 8000 ? "up" : "stable"}
           trendValue={`${Math.round((metrics.steps / 10000) * 100)}% of goal`}
         >
-          <div className={`mt-3 bg-muted/20 rounded-full h-2 ${isSmartwatch ? "smartwatch-hide" : ""}`}>
+          <div className="mt-3 bg-muted/20 rounded-full h-2">
             <div 
               className="bg-activity h-2 rounded-full transition-all duration-500"
               style={{ width: `${Math.min(100, (metrics.steps / 10000) * 100)}%` }}
@@ -182,7 +151,7 @@ export function Dashboard() {
           </div>
         </HealthMetricCard>
 
-        {!isSmartwatch && <HealthMetricCard
+        <HealthMetricCard
           title="Sleep Quality"
           value={metrics.sleepHours.toString()}
           unit="hours"
@@ -190,9 +159,9 @@ export function Dashboard() {
           color="sleep"
           trend={metrics.sleepHours >= 7 ? "stable" : "down"}
           trendValue={metrics.sleepHours >= 7 ? "Good sleep" : "Insufficient"}
-        />}
+        />
 
-        {!isSmartwatch && <HealthMetricCard
+        <HealthMetricCard
           title="Stress Level"
           value={metrics.stressLevel.toString()}
           unit="/100"
@@ -202,16 +171,16 @@ export function Dashboard() {
           trendValue={metrics.stressLevel > 60 ? "Elevated" : metrics.stressLevel < 30 ? "Low" : "Moderate"}
           alert={metrics.stressLevel > 70 ? "warning" : "normal"}
         >
-          <div className={`mt-3 ${isSmartwatch ? "smartwatch-hide" : ""}`}>
+          <div className="mt-3">
             <HealthChart 
               data={trendData.map(d => ({ time: d.time, value: d.stressLevel }))}
               color="hsl(var(--stress))"
-              height={isMobile ? 60 : 80}
+              height={80}
             />
           </div>
-        </HealthMetricCard>}
+        </HealthMetricCard>
 
-        {!isSmartwatch && <HealthMetricCard
+        <HealthMetricCard
           title="Calories Burned"
           value={metrics.calories.toLocaleString()}
           unit="kcal"
@@ -220,32 +189,32 @@ export function Dashboard() {
           trend="up"
           trendValue="Today's progress"
         >
-          <div className={`mt-3 bg-muted/20 rounded-full h-2 ${isSmartwatch ? "smartwatch-hide" : ""}`}>
+          <div className="mt-3 bg-muted/20 rounded-full h-2">
             <div 
               className="bg-activity h-2 rounded-full transition-all duration-500"
               style={{ width: `${Math.min(100, (metrics.calories / 2000) * 100)}%` }}
             />
           </div>
-        </HealthMetricCard>}
+        </HealthMetricCard>
       </div>
 
       {/* Charts and Insights Row */}
-      {!isSmartwatch && <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-1 lg:grid-cols-2 gap-6"}`}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Heart Rate Trend */}
         <Card className="p-6 shadow-card">
-          <h3 className={`${isMobile ? "text-base" : "text-lg"} font-semibold text-foreground mb-4`}>
+          <h3 className="text-lg font-semibold text-foreground mb-4">
             {`Heart Rate Trend (${timeframe})`}
           </h3>
           <HealthChart 
             data={getTimeframeData()}
             color="hsl(var(--heart-rate))"
-            height={isMobile ? 200 : 250}
+            height={250}
           />
         </Card>
 
         {/* AI Insights */}
         <AIInsightsCard insights={insights} />
-      </div>}
+      </div>
 
       {/* Emergency Care Finder - Shows when health alerts are triggered */}
       {showEmergencyFinder && (
@@ -253,32 +222,32 @@ export function Dashboard() {
       )}
 
       {/* Additional Charts */}
-      {!isSmartwatch && <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-1 lg:grid-cols-2 gap-6"}`}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6 shadow-card">
-          <h3 className={`${isMobile ? "text-base" : "text-lg"} font-semibold text-foreground mb-4`}>
+          <h3 className="text-lg font-semibold text-foreground mb-4">
             Stress Level Pattern
           </h3>
           <HealthChart 
             data={trendData.map(d => ({ time: d.time, value: d.stressLevel }))}
             color="hsl(var(--stress))"
-            height={isMobile ? 200 : 250}
+            height={250}
           />
         </Card>
 
         <Card className="p-6 shadow-card">
-          <h3 className={`${isMobile ? "text-base" : "text-lg"} font-semibold text-foreground mb-4`}>
+          <h3 className="text-lg font-semibold text-foreground mb-4">
             Blood Oxygen Levels
           </h3>
           <HealthChart 
             data={trendData.map(d => ({ time: d.time, value: d.bloodOxygen }))}
             color="hsl(var(--oxygen))"
-            height={isMobile ? 200 : 250}
+            height={250}
           />
         </Card>
-      </div>}
+      </div>
 
       {/* Community Posts */}
-      {!isSmartwatch && <Posts />}
+      <Posts />
     </div>
   );
 }

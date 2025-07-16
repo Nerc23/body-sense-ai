@@ -13,19 +13,8 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
   const { signIn, signUp, signInWithProvider, user } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -60,22 +49,22 @@ const Auth = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-background flex items-center justify-center ${isMobile ? "p-4" : "p-6"}`}>
+    <div className="min-h-screen bg-gradient-background flex items-center justify-center p-6">
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className={`flex ${isMobile ? "h-12 w-12" : "h-16 w-16"} items-center justify-center rounded-xl bg-gradient-primary shadow-glow`}>
-              <Heart className={`${isMobile ? "h-6 w-6" : "h-8 w-8"} text-primary-foreground`} />
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-primary shadow-glow">
+              <Heart className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className={`${isMobile ? "text-xl" : "text-2xl"} font-bold text-foreground`}>HealthTracker</h1>
-          <p className={`${isMobile ? "text-sm" : ""} text-muted-foreground`}>Your Personal Health Monitor</p>
+          <h1 className="text-2xl font-bold text-foreground">HealthTracker</h1>
+          <p className="text-muted-foreground">Your Personal Health Monitor</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className={isMobile ? "text-lg" : ""}>Authentication</CardTitle>
+            <CardTitle>Authentication</CardTitle>
             <CardDescription>
               Sign in to your account or create a new one to start monitoring your health
             </CardDescription>
@@ -133,7 +122,7 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className={`grid ${isMobile ? "grid-cols-1 gap-2" : "grid-cols-2 gap-4"}`}>
+                  <div className="grid grid-cols-2 gap-4">
                     <Button
                       variant="outline"
                       onClick={() => handleSocialSignIn('google')}
@@ -229,7 +218,7 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className={`grid ${isMobile ? "grid-cols-1 gap-2" : "grid-cols-2 gap-4"}`}>
+                  <div className="grid grid-cols-2 gap-4">
                     <Button
                       variant="outline"
                       onClick={() => handleSocialSignIn('google')}
@@ -270,7 +259,7 @@ const Auth = () => {
           </CardContent>
         </Card>
 
-        <div className={`text-center ${isMobile ? "text-xs" : "text-sm"} text-muted-foreground`}>
+        <div className="text-center text-sm text-muted-foreground">
           <p>
             Sign up to track your health metrics and access personalized insights.
           </p>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { 
   Activity, 
   Heart, 
@@ -9,11 +8,9 @@ import {
   LogOut,
   Stethoscope,
   Brain,
-  Home,
-  ChevronLeft,
-  ChevronRight
+  Home
 } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -32,28 +29,9 @@ const userActions = [
 ];
 
 export function HealthSidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const location = useLocation();
-  const currentPath = location.pathname;
   const { signOut } = useAuth();
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile/smartwatch screen sizes
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-      // Auto-collapse on mobile and smartwatch
-      if (window.innerWidth < 768) {
-        setCollapsed(true);
-      }
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const isActive = (path: string) => currentPath === path;
+  const isActive = (path: string) => location.pathname === path;
 
   const getNavClasses = (path: string) =>
     isActive(path)
@@ -61,55 +39,37 @@ export function HealthSidebar() {
       : "hover:bg-secondary/50 text-foreground hover:text-primary transition-all duration-200";
 
   return (
-    <div className={`${
-      collapsed ? "w-16" : isMobile ? "w-56" : "w-64"
-    } h-screen bg-gradient-background border-r border-border/50 transition-all duration-300 flex flex-col ${
-      isMobile ? "fixed z-50 shadow-elevated" : "relative"
-    }`}>
-      {/* Header with toggle */}
-      <div className={`${isMobile ? "p-2" : "p-4"} border-b border-border/50`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`flex ${isMobile ? "h-8 w-8" : "h-10 w-10"} items-center justify-center rounded-xl bg-gradient-primary shadow-glow`}>
-              <Stethoscope className={`${isMobile ? "h-4 w-4" : "h-5 w-5"} text-primary-foreground`} />
-            </div>
-            {!collapsed && (
-              <div>
-                <h1 className={`${isMobile ? "text-base" : "text-lg"} font-bold text-foreground`}>BodySense AI</h1>
-                <p className={`${isMobile ? "text-xs" : "text-xs"} text-muted-foreground smartwatch-hide`}>Health Monitor</p>
-              </div>
-            )}
+    <div className="w-64 h-screen bg-gradient-background border-r border-border/50 flex flex-col">
+      {/* Header */}
+      <div className="p-4 border-b border-border/50">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-primary shadow-glow">
+            <Stethoscope className="h-5 w-5 text-primary-foreground" />
           </div>
-          <Button
-            variant="ghost"
-            size={isMobile ? "sm" : "sm"}
-            onClick={() => setCollapsed(!collapsed)}
-            className={`${isMobile ? "h-6 w-6" : "h-8 w-8"} p-0`}
-          >
-            {collapsed ? <ChevronRight className={`${isMobile ? "h-3 w-3" : "h-4 w-4"}`} /> : <ChevronLeft className={`${isMobile ? "h-3 w-3" : "h-4 w-4"}`} />}
-          </Button>
+          <div>
+            <h1 className="text-lg font-bold text-foreground">BodySense AI</h1>
+            <p className="text-xs text-muted-foreground">Health Monitor</p>
+          </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className={`flex-1 ${isMobile ? "p-2" : "p-4"} space-y-4 overflow-y-auto`}>
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
         {/* Health Metrics */}
         <div>
-          {!collapsed && (
-            <h3 className={`text-muted-foreground ${isMobile ? "text-xs" : "text-xs"} font-semibold uppercase tracking-wider mb-2 smartwatch-hide`}>
-              Health Metrics
-            </h3>
-          )}
-          <nav className={`space-y-${isMobile ? "1" : "2"}`}>
+          <h3 className="text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-2">
+            Health Metrics
+          </h3>
+          <nav className="space-y-2">
             {healthCategories.map((item) => (
               <NavLink 
                 key={item.title}
                 to={item.url} 
                 end 
-                className={`flex items-center gap-2 rounded-lg ${isMobile ? "px-2 py-2" : "px-3 py-2"} transition-all duration-200 ${getNavClasses(item.url)}`}
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 transition-all duration-200 ${getNavClasses(item.url)}`}
               >
-                <item.icon className={`${isMobile ? "h-4 w-4" : "h-4 w-4"} flex-shrink-0`} />
-                {!collapsed && <span className={`${isMobile ? "text-xs" : "text-sm"}`}>{item.title}</span>}
+                <item.icon className="h-4 w-4 flex-shrink-0" />
+                <span className="text-sm">{item.title}</span>
               </NavLink>
             ))}
           </nav>
@@ -117,42 +77,32 @@ export function HealthSidebar() {
 
         {/* User Actions */}
         <div>
-          {!collapsed && (
-            <h3 className={`text-muted-foreground ${isMobile ? "text-xs" : "text-xs"} font-semibold uppercase tracking-wider mb-2 smartwatch-hide`}>
-              Account
-            </h3>
-          )}
-          <nav className={`space-y-${isMobile ? "1" : "2"}`}>
+          <h3 className="text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-2">
+            Account
+          </h3>
+          <nav className="space-y-2">
             {userActions.map((item) => (
               <NavLink 
                 key={item.title}
                 to={item.url} 
-                className={`flex items-center gap-2 rounded-lg ${isMobile ? "px-2 py-2" : "px-3 py-2"} transition-all duration-200 ${getNavClasses(item.url)}`}
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 transition-all duration-200 ${getNavClasses(item.url)}`}
               >
-                <item.icon className={`${isMobile ? "h-4 w-4" : "h-4 w-4"} flex-shrink-0`} />
-                {!collapsed && <span className={`${isMobile ? "text-xs" : "text-sm"}`}>{item.title}</span>}
+                <item.icon className="h-4 w-4 flex-shrink-0" />
+                <span className="text-sm">{item.title}</span>
               </NavLink>
             ))}
             
             {/* Logout */}
             <button 
               onClick={signOut}
-              className={`flex w-full items-center gap-2 rounded-lg ${isMobile ? "px-2 py-2" : "px-3 py-2"} text-left transition-all duration-200 hover:bg-destructive/10 hover:text-destructive`}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
             >
-              <LogOut className={`${isMobile ? "h-4 w-4" : "h-4 w-4"} flex-shrink-0`} />
-              {!collapsed && <span className={`${isMobile ? "text-xs" : "text-sm"}`}>Logout</span>}
+              <LogOut className="h-4 w-4 flex-shrink-0" />
+              <span className="text-sm">Logout</span>
             </button>
           </nav>
         </div>
       </div>
-      
-      {/* Mobile overlay */}
-      {isMobile && !collapsed && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setCollapsed(true)}
-        />
-      )}
     </div>
   );
 }
