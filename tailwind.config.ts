@@ -18,6 +18,12 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				'xs': '320px',
+				'smartwatch': {'max': '320px', 'raw': '(max-height: 320px)'},
+				'mobile': {'max': '640px'},
+				'tablet': {'min': '641px', 'max': '1024px'},
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

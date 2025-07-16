@@ -129,5 +129,116 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    /* Prevent horizontal scrolling on mobile */
+    overflow-x: hidden;
+    /* Improve text rendering on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent zoom on input focus on iOS */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Mobile-first responsive typography */
+  html {
+    font-size: 14px;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  /* Touch-friendly interactive elements */
+  button, 
+  [role="button"],
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smartwatch specific styles */
+  @media (max-width: 320px) and (max-height: 320px) {
+    html {
+      font-size: 12px;
+    }
+    
+    .card {
+      @apply p-2;
+    }
+    
+    h1 {
+      @apply text-lg;
+    }
+    
+    h2 {
+      @apply text-base;
+    }
+    
+    h3 {
+      @apply text-sm;
+    }
+    
+    /* Hide less critical elements on smartwatch */
+    .smartwatch-hide {
+      display: none;
+    }
+    
+    /* Larger touch targets for smartwatch */
+    button, 
+    [role="button"] {
+      min-height: 48px;
+      min-width: 48px;
+      @apply text-sm;
+    }
+  }
+
+  /* Mobile phone styles */
+  @media (max-width: 640px) {
+    /* Ensure proper spacing on mobile */
+    .mobile-padding {
+      @apply px-4 py-2;
+    }
+    
+    /* Stack cards vertically on mobile */
+    .mobile-stack {
+      @apply flex-col space-y-4;
+    }
+    
+    /* Reduce chart height on mobile */
+    .mobile-chart {
+      height: 200px !important;
+    }
+  }
+
+  /* Prevent text selection on touch devices for better UX */
+  @media (hover: none) and (pointer: coarse) {
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 0 0% 20%;
+      --ring: 183 100% 50%;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
