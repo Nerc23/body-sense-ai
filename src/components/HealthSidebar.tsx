@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const healthCategories = [
   { title: "Dashboard", url: "/", icon: Home },
@@ -34,6 +35,7 @@ export function HealthSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+  const { signOut } = useAuth();
 
   const isActive = (path: string) => currentPath === path;
 
@@ -114,7 +116,7 @@ export function HealthSidebar() {
             
             {/* Logout */}
             <button 
-              onClick={() => window.location.href = '/auth'}
+              onClick={signOut}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
             >
               <LogOut className="h-4 w-4 flex-shrink-0" />

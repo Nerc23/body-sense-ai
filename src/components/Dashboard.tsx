@@ -4,6 +4,7 @@ import { HealthMetricCard } from "./HealthMetricCard";
 import { HealthChart } from "./HealthChart";
 import { AIInsightsCard } from "./AIInsightsCard";
 import { EmergencyDoctorFinder } from "./EmergencyDoctorFinder";
+import { Posts } from "./Posts";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateHealthMetrics, generateTrendData, generateAIInsights } from "@/lib/healthData";
@@ -238,6 +239,9 @@ export function Dashboard() {
           />
         </Card>
       </div>
+
+      {/* Community Posts */}
+      <Posts />
     </div>
   );
 }
