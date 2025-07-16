@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { LucideIcon } from "lucide-react";
+import { DivideIcon as LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 interface HealthMetricCardProps {
