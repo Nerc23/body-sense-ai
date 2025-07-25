@@ -19,11 +19,11 @@ The system continuously tracks these critical health indicators:
 
 ### Heart Rate:
 - Real-time monitoring for irregular rhythms, tachycardia, bradycardia, and arrhythmias
-## Blood Oxygen Level (SpO2): 
+### Blood Oxygen Level (SpO2): 
 - Continuous oxygen saturation tracking to detect respiratory issues and hypoxemia
-## Sleep Patterns:
+### Sleep Patterns:
 - Analysis of sleep quality, duration, REM cycles, and sleep disorders
-## Activity Level: 
+### Activity Level: 
 - Movement tracking, step count, exercise intensity, and sedentary behavior patterns
 
 When any of these metrics fall outside normal ranges or show concerning patterns, the doctor recommendation interface activates automatically to connect users with appropriate medical care.
