@@ -13,6 +13,22 @@ A comprehensive React component designed for health monitoring apps to display n
 
 This interface automatically activates when the AI health monitoring system detects significant changes in a user's health metrics, providing immediate access to appropriate medical care based on the detected condition and user location.
 
+
+## Monitored Health Metrics
+The system continuously tracks these critical health indicators:
+
+### Heart Rate:
+- Real-time monitoring for irregular rhythms, tachycardia, bradycardia, and arrhythmias
+## Blood Oxygen Level (SpO2): 
+- Continuous oxygen saturation tracking to detect respiratory issues and hypoxemia
+## Sleep Patterns:
+- Analysis of sleep quality, duration, REM cycles, and sleep disorders
+## Activity Level: 
+- Movement tracking, step count, exercise intensity, and sedentary behavior patterns
+
+When any of these metrics fall outside normal ranges or show concerning patterns, the doctor recommendation interface activates automatically to connect users with appropriate medical care.
+
+
 ## Key Features
 
 ### 🚨 Emergency Detection & Response
