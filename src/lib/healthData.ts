@@ -1,4 +1,6 @@
 // Simulated health data for the demo
+import { fetchHealthMetrics, fetchHealthTrends, fetchHealthAlerts } from './api';
+
 export interface HealthMetrics {
   heartRate: number;
   bloodOxygen: number;
@@ -18,7 +20,8 @@ export interface HealthTrend {
 }
 
 // Generate realistic health data
-export function generateHealthMetrics(): HealthMetrics {
+export function generateHealthMetrics(useApi: boolean = false): HealthMetrics {
+  // If API integration is enabled, this will be handled by the API layer
   const now = new Date();
   const hour = now.getHours();
   
@@ -36,7 +39,8 @@ export function generateHealthMetrics(): HealthMetrics {
   };
 }
 
-export function generateTrendData(hours: number = 24): HealthTrend[] {
+export function generateTrendData(hours: number = 24, useApi: boolean = false): HealthTrend[] {
+  // If API integration is enabled, this will be handled by the API layer
   const data: HealthTrend[] = [];
   const now = new Date();
   
@@ -74,7 +78,8 @@ export function generateTrendData(hours: number = 24): HealthTrend[] {
   return data;
 }
 
-export function generateAIInsights() {
+export function generateAIInsights(useApi: boolean = false) {
+  // If API integration is enabled, this will be handled by the API layer
   const insights = [
     {
       id: "1",
